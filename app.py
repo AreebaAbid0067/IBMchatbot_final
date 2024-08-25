@@ -23,6 +23,7 @@ def generate_text():
 
         # Prepare the payload for the IBM Watson API
         payload = {
+            
             "input": text_input,
             "parameters": parameters
         }
