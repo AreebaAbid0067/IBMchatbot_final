@@ -1,12 +1,19 @@
 from flask import Flask, request, jsonify
-import requests
+from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(_name_)
+CORS(app)  # Allow CORS for all domains
 
-# IBM Watson API details
+# IBM Watson API details (this is a mock setup for the demo)
 IBM_WATSON_URL = "https://us-south.ml.cloud.ibm.com/ml/v1/deployments/00a7d919-6547-4b9d-86f0-0fd0bd476886/text/generation?version=2023-05-29"
-IBM_WATSON_ACCESS_TOKEN = "eyJraWQiOiIyMDI0MDgwMzA4NDEiLCJhbGciOiJSUzI1NiJ9.eyJpYW1faWQiOiJJQk1pZC02OTIwMDBJUEUwIiwiaWQiOiJJQk1pZC02OTIwMDBJUEUwIiwicmVhbG1pZCI6IklCTWlkIiwianRpIjoiYmJlOGQwMjctNTk0NC00ODhjLTgxYWYtMDEyNGQ2N2NhZDU1IiwiaWRlbnRpZmllciI6IjY5MjAwMElQRTAiLCJnaXZlbl9uYW1lIjoiQXJlZWJhIiwiZmFtaWx5X25hbWUiOiJBYmlkIiwibmFtZSI6IkFyZWViYSBBYmlkIiwiZW1haWwiOiJhYXJlZWJhMDA2QGdtYWlsLmNvbSIsInN1YiI6ImFhcmVlYmEwMDZAZ21haWwuY29tIiwiYXV0aG4iOnsic3ViIjoiYWFyZWViYTAwNkBnbWFpbC5jb20iLCJpYW1faWQiOiJJQk1pZC02OTIwMDBJUEUwIiwibmFtZSI6IkFyZWViYSBBYmlkIiwiZ2l2ZW5fbmFtZSI6IkFyZWViYSIsImZhbWlseV9uYW1lIjoiQWJpZCIsImVtYWlsIjoiYWFyZWViYTAwNkBnbWFpbC5jb20ifSwiYWNjb3VudCI6eyJ2YWxpZCI6dHJ1ZSwiYnNzIjoiYTVkMDllMDA4NjZmNDA3NDhkNzM4NzYyZDQzOGI5OTIiLCJpbXNfdXNlcl9pZCI6IjEyNjI2MjExIiwiZnJvemVuIjp0cnVlLCJpbXMiOiIyNzQ0OTQ2In0sImlhdCI6MTcyNDU4MDQ0NSwiZXhwIjoxNzI0NTg0MDQ1LCJpc3MiOiJodHRwczovL2lhbS5jbG91ZC5pYm0uY29tL2lkZW50aXR5IiwiZ3JhbnRfdHlwZSI6InVybjppYm06cGFyYW1zOm9hdXRoOmdyYW50LXR5cGU6YXBpa2V5Iiwic2NvcGUiOiJpYm0gb3BlbmlkIiwiY2xpZW50X2lkIjoiZGVmYXVsdCIsImFjciI6MSwiYW1yIjpbInB3ZCJdfQ.dlR1D6STwD2mq5yBD8TfyQ4Ijyo5iNeWvDFCG24fEfSwZvy2y9IwyP9wnfmUHluQ_vHPjfb08Ew5tf2gLog7lGG8MB7CwUM15692tY0YjPn2ADXx1nm5KvN-aZEa7060QbhX5BdMQntXy53HYC5HikI66TZWUbvfMy45FGWSy6aMTTt_-huZ3t131dJ4Gh1JDEOeQj3sUWqB0CLghSmk-eaU_I-Ec5nawnXMQ1fI5iNqBVHgNIq8vF_ma3aniAbz4BAoD-loonPrSUnKTwhxGeRyhvonSE-TP0fU66zPwYAAXoYicWS3PZRaQUEDVvtG8fSDL16NE86k534otrqjbw"  # Replace with your actual access token
+IBM_WATSON_ACCESS_TOKEN = ""  # Replace with your actual access token
 
+# Root route for the server
+@app.route('/', methods=['GET'])
+def index():
+    return "Welcome to the Chatbot Backend API"
+
+# Main endpoint for generating text
 @app.route('/generate-text', methods=['POST'])
 def generate_text():
     try:
@@ -25,17 +32,13 @@ def generate_text():
             "Content-Type": "application/json"
         }
 
-        # Make a POST request to the IBM Watson API
-        response = requests.post(IBM_WATSON_URL, json=payload, headers=headers)
-        
-        if response.status_code == 200:
-            response_data = response.json()
-            generated_text = response_data.get("generated_text", "No response from the model.")
-            return jsonify({"generated_text": generated_text})
-        else:
-            return jsonify({"error": "Failed to generate text", "details": response.text}), response.status_code
+        # For the sake of this demo, we're not actually calling the IBM API
+        # Instead, we'll return a mock response
+        generated_text = f"Mocked response for: {text_input}"
+        return jsonify({"generated_text": generated_text})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     app.run(debug=True)
